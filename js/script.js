@@ -242,10 +242,10 @@ function totalInventoryValue(inventory){
     let inventoryValue = 0;
     for(const category of inventory){
         let categoryValue = 0
-        for(const book of category.books){
-            inventoryValue += book.price*book.quantity;
+        for(const book of category.books){   
             categoryValue  += book.price*book.quantity;         
-        }    
+        }
+        inventoryValue += categoryValue;
         console.log(category.category +" "+ categoryValue +" Euro")    
     }
     console.log("Total inventory price "+ inventoryValue + " Euro");
