@@ -56,10 +56,10 @@ function bookLister(inventory){
         console.log(`Category: ${category.category}`);
         for(const book of category.books){
             if(book.publishing_year === 2021){
-                console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quanity},  Price: ${book.price}, New Book!`);
+                console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}, New Book!`);
             }
             else{
-            console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quanity},  Price: ${book.price}`);
+            console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}`);
             }
         }
     }
