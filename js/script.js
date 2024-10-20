@@ -227,28 +227,38 @@ const inventory = [
 ]
 function bookLister(inventory){
     for(const category of inventory){
+        console.log(`Category: ${category.category}`);
         for(const book of category.books){
             if(book.publishing_year === 2021){
-                book.publishing_year += " New book";
-                console.log(book);
+                console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quanity},  Price: ${book.price}, New Book!`);
             }
             else{
-            console.log(book);
+            console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quanity},  Price: ${book.price}`);
             }
         }
     }
 }
+function calcBookValue(book){
+    return book.price * book.quantity;
+}
+function calcCategoryValue(books){
+    let categoryValue = 0;
+    for(const book of books){
+        categoryValue += calcBookValue(book)
+    }
+    return categoryValue;
+}
+function printCategoryValue(categoryName, categoryValue){
+    console.log(`Category: ${categoryName} total value: ${categoryValue} Euro`);
+}
 function totalInventoryValue(inventory){
     let inventoryValue = 0;
     for(const category of inventory){
-        let categoryValue = 0
-        for(const book of category.books){   
-            categoryValue  += book.price*book.quantity;         
-        }
+        let categoryValue = calcCategoryValue(category.books);
         inventoryValue += categoryValue;
-        console.log(category.category +" "+ categoryValue +" Euro")    
+        printCategoryValue(category.category, categoryValue)  
     }
-    console.log("Total inventory price "+ inventoryValue + " Euro");
+    console.log("Total inventory price: "+ inventoryValue + " Euro");
 }
 bookLister(inventory);
 totalInventoryValue(inventory);
