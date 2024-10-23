@@ -20,7 +20,7 @@ const inventory = [
         createBook("Coding with Ant Farms", "IT-12346", 2021, 300, 8, 10),
         createBook("Programavimas nelinksmai", "IT-13755", 2019, 1250, 5, 250),
         createBook("Zack Brannigan's Big Book Of Code", "IT-11312", 2021, 450, 20, 60),
-        createBook("c++ for dummies", "IT-12789", 2017, 200, 10, 45),
+        createBook("C++ for dummies", "IT-12789", 2017, 200, 10, 45),
     ]),
     createCategory("Fantastika", [
         createBook("Twinkle Toes", "FA-12747", 2021, 150, 30, 15),
@@ -51,17 +51,38 @@ const inventory = [
         createBook("Mortuary files", "MT-18185", 2010, 560, 4, 50)
     ]),
 ];
+function printBook(book){
+    if(book.publishing_year === 2021){
+        console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}, New Book!`);
+    }
+    else{
+    console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}`);
+    }
+}
+function printBooks(category){
+    for(const book of category){
+        printBook(book);
+    }
+}
+function printCategories(category){
+    if(category.books.length > 0){
+        console.log(`Category: ${category.category}`);
+    }
+}
 function bookLister(inventory){
     for(const category of inventory){
-        console.log(`Category: ${category.category}`);
-        for(const book of category.books){
+        //console.log(`Category: ${category.category}`);
+        printCategories(category);
+        printBooks(category.books)
+        /*for(const book of category.books){
+            //Praeitas kodas pries extra uzduoti
             if(book.publishing_year === 2021){
                 console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}, New Book!`);
             }
             else{
             console.log(`Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}`);
             }
-        }
+        }*/      
     }
 }
 function calcBookValue(book){
@@ -88,3 +109,99 @@ function totalInventoryValue(inventory){
 }
 bookLister(inventory);
 totalInventoryValue(inventory);
+//Extra functions ______________________________________________________________________________________
+console.log("Start of the extra functions   ! ! ! ! ! ");
+function filterCategory(inventory, filterRequest){
+    return inventory.filter((cat) => cat.category === filterRequest);
+}
+function filterTitle(inventory, filterRequest){
+    let books = inventory.map((cat) => ({cat, books: cat.books.filter((book) => book.title == filterRequest),
+    }))
+    .filter((cat) => cat.books.length > 0);
+          return books;  
+}
+function filterPages(){
+    return inventory.filter((cat) => cat.books = cat.books.filter((book) => book.pages == filterRequest))  
+}
+function filterInventory(selectedFilter, filterRequest ,inventory){
+    if(selectedFilter == "category"){
+        return filterCategory(inventory, filterRequest);
+    }
+    else if(selectedFilter == "title"){
+        return filterTitle(inventory, filterRequest)
+    }
+    else if (selectedFilter == "pages"){
+        let books = inventory.filter((cat) => cat.books = cat.books.filter((book) => book.pages == filterRequest))     
+        return books;
+    }
+}
+function flatBooksArray(inventory){
+    return inventory.map(category => category.books).flat()
+}
+function minPrice(inventory){
+    return minPrice = Math.min(...flatBooksArray(inventory).map((book)=>book.price));
+}
+function maxPrice(inventory){
+    return minPrice = Math.max(...flatBooksArray(inventory).map((book)=>book.price)); 
+}
+function minMaxPrice(selectedFilter, inventory){
+    if(selectedFilter == "min")
+    {
+        return minPrice(inventory);    
+    }
+    else if(selectedFilter == "max"){
+        return maxPrice(inventory);
+    }
+}
+function printPrice(selectedFilter, inventory){
+    console.log(selectedFilter + " price is " + minMaxPrice(selectedFilter, inventory) + " euro")
+}
+function sortBookByPrice(bookArray, order){
+    bookArray.sort((a,b)=>{
+        if(a.price > b.price) return 1 * order;
+        if(a.price < b.price) return -1 * order;
+        if(a.price == b.price) return 0
+    });
+    return bookArray;
+}
+function sortBookByTitle(bookArray, order){
+    bookArray.sort((a,b)=>{
+        if(a.title > b.title) return 1 * order;
+        if(a.title < b.title) return -1 * order;
+        if(a.title == b.title) return 0
+    });
+    return bookArray;
+}
+function sortBookByAuthor(bookArray, order){
+    bookArray.sort((a,b)=>{
+        if(a.author > b.author) return 1 * order;
+        if(a.author < b.author) return -1 * order;
+        if(a.author == b.author) return 0
+    });
+    return bookArray;
+}
+function bookSorter(bookArray,selectedFilter, order){
+   if(selectedFilter === "price"){
+       return sortBookByPrice(bookArray, order);
+   }
+   else if(selectedFilter === "title"){
+       return sortBookByTitle(bookArray, order);
+   }
+   else if(selectedFilter === "author"){
+       return  sortBookByAuthor(bookArray, order);
+   }
+   return bookArray;
+}
+function sortedBookListerWithCategories(inventory,selectedFilter, order){
+    for(const category of inventory){
+        console.log(`Category: ${category.category}`);
+        printBooks(bookSorter(category.books,selectedFilter, order))
+    }
+}
+//Sorts books by price | title | author -1 for Descending, 1 for Ascending
+sortedBookListerWithCategories(inventory,"price", 1 );
+//Prints min or max price from all books or any array thats not in an array
+printPrice("max",inventory);
+//Filters books and prints result, needs precise title :/
+bookLister(filterInventory("title","Apple of your eye", inventory));
+
