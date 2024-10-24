@@ -107,20 +107,17 @@ function totalInventoryValue(inventory){
     }
     console.log("Total inventory price: "+ inventoryValue + " Euro");
 }
-bookLister(inventory);
-totalInventoryValue(inventory);
+//bookLister(inventory);
+//totalInventoryValue(inventory);
 //Extra functions ______________________________________________________________________________________
 console.log("Start of the extra functions   ! ! ! ! ! ");
 function filterCategory(inventory, filterRequest){
     return inventory.filter((cat) => cat.category === filterRequest);
 }
 function filterTitle(inventory, filterRequest){
-    let books = inventory.map((cat) => ({cat, books: cat.books.filter((book) => book.title == filterRequest),
-    }))
-    .filter((cat) => cat.books.length > 0);
-          return books;  
+    return inventory.filter((cat) => cat.books = cat.books.filter((book) => book.title == filterRequest))
 }
-function filterPages(){
+function filterPages(inventory, filterRequest){
     return inventory.filter((cat) => cat.books = cat.books.filter((book) => book.pages == filterRequest))  
 }
 function filterInventory(selectedFilter, filterRequest ,inventory){
@@ -131,8 +128,7 @@ function filterInventory(selectedFilter, filterRequest ,inventory){
         return filterTitle(inventory, filterRequest)
     }
     else if (selectedFilter == "pages"){
-        let books = inventory.filter((cat) => cat.books = cat.books.filter((book) => book.pages == filterRequest))     
-        return books;
+        return filterPages(inventory,filterRequest);
     }
 }
 function flatBooksArray(inventory){
@@ -194,7 +190,7 @@ function bookSorter(bookArray,selectedFilter, order){
 }
 function sortedBookListerWithCategories(inventory,selectedFilter, order){
     for(const category of inventory){
-        console.log(`Category: ${category.category}`);
+        printCategories(category);
         printBooks(bookSorter(category.books,selectedFilter, order))
     }
 }
