@@ -6,6 +6,44 @@
     <title>Document</title>
 </head>
 <body>
+    <main>
+        <section class="bookSection">
+            <form class="bookSection__form">
+                <select class="categorySelect">
+                    <option value="all">All</option>
+                    <option value="Informacinės technologijos">Informacinės technologijos</option>
+                    <option value="Fantastika">Fantastika</option>
+                    <option value="Historical Fiction">Historical fiction</option>
+                    <option value="Science Fiction">Science fiction</option>
+                    <option value="Mystery & Thriller">Mystery</option>
+                </select>
+                <input class="form__titleInput" type="text">
+                <input class="form__pagesRange" type="range" min="0" max="1000" value="50" >
+               <!--<input type="range">--> 
+                <button>Filtruoti</button>
+            </form>
+            <form class="bookSection__sortForm">
+                <select class="sortForm__sortSelect">
+                    <option value="all">Select Sort</option>
+                    <option value="title">By title alphabet</option>
+                    <option value="asc">By price asc</option>
+                    <option value="desc">By price desc</option>
+                </select>
+                <button>sort</button>
+            </form>
+            <ul class="bookSection__list">
+            
+            </ul>
+        </section>
+        <section class="mathSection">
+            <button class="mathSection__inventoryVal">Apskaičiuoti inventoriaus vertę</button>
+            <button class="mathSection__minBtn">"Pigiausia knyga"</button>
+            <button class="mathSection__maxBtn">"Brangiausia knyga"</button>
+            <ul class="mathSection__list">
+                <li></li>
+            </ul>
+        </section>
+    </main>
     <script src="js/script.js"></script>
 </body>
 </html>
