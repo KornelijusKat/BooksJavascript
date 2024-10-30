@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Book management</title>
 </head>
 <body>
     <main>
@@ -17,17 +18,17 @@
                     <option value="Science Fiction">Science fiction</option>
                     <option value="Mystery & Thriller">Mystery</option>
                 </select>
-                <input class="form__titleInput" type="text">
-                <input class="form__pagesRange" type="range" min="0" max="1000" value="50" >
-               <!--<input type="range">--> 
+                <input class="form__titleInput" type="text" placeholder="Search by title">
+                <input class="form__pageFrom" type="number" placeholder="Pages from">
+                <input class="form__pageTo" type="number" placeholder="Pages to">       
                 <button>Filtruoti</button>
             </form>
             <form class="bookSection__sortForm">
                 <select class="sortForm__sortSelect">
                     <option value="all">Select Sort</option>
                     <option value="title">By title alphabet</option>
-                    <option value="asc">By price asc</option>
-                    <option value="desc">By price desc</option>
+                    <option value="1">By price asc</option>
+                    <option value="-1">By price desc</option>
                 </select>
                 <button>sort</button>
             </form>
@@ -36,11 +37,13 @@
             </ul>
         </section>
         <section class="mathSection">
-            <button class="mathSection__inventoryVal">Apskaičiuoti inventoriaus vertę</button>
-            <button class="mathSection__minBtn">"Pigiausia knyga"</button>
-            <button class="mathSection__maxBtn">"Brangiausia knyga"</button>
+            <div class="btnContainer">
+                <button class="mathSection__inventoryVal">Apskaičiuoti inventoriaus vertę</button>
+                <button class="mathSection__minBtn">"Pigiausia knyga"</button>
+                <button class="mathSection__maxBtn">"Brangiausia knyga"</button>
+            </div>
             <ul class="mathSection__list">
-                <li></li>
+                
             </ul>
         </section>
     </main>

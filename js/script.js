@@ -162,10 +162,10 @@ function sortBookByPrice(bookArray, order){
     });
     return bookArray;
 }
-function sortBookByTitle(bookArray, order){
+function sortBookByTitle(bookArray){
     bookArray.sort((a,b)=>{
-        if(a.title > b.title) return 1 * order;
-        if(a.title < b.title) return -1 * order;
+        if(a.title > b.title) return 1 //* order;
+        if(a.title < b.title) return -1 //* order;
         if(a.title == b.title) return 0
     });
     return bookArray;
@@ -179,7 +179,8 @@ function sortBookByQuantity(bookArray, order){
     return bookArray;
 }
 function bookSorter(bookArray,selectedFilter, order){
-   if(selectedFilter === "price"){
+   //if(selectedFilter === "price"){
+    if(selectedFilter === "1" || selectedFilter === "-1" ){
        return sortBookByPrice(bookArray, order);
    }
    else if(selectedFilter === "title"){
@@ -204,65 +205,64 @@ function sortedBookListerWithCategories(inventory,selectedFilter, order){
 //Filters books and prints result, needs precise title :/
     //bookLister(filterInventory("title","The memory", inventory));
 
+
+
 //Dom part Above is the previous assignment functions to call.
 fillInitialList(inventory);
+let displayedList = []; 
 function getBookString(book){
     if(book.publishing_year === 2021){
-     return  `Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}, New Book!`;
+     return  `Title: ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year} New Book!, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price} Euro`;
     }
     else{
-    return `Title ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price}`;
+    return `Title ${book.title}, ISBN: ${book.ISBN}, Publishing year: ${book.publishing_year}, Pages: ${book.pages}, Quantity: ${book.quantity},  Price: ${book.price} Euro`;
     }
 }
 document.querySelector(`.bookSection__form button`).addEventListener('click',(e)=>{
-    e.preventDefault();
     document.querySelector(`.bookSection .bookSection__list`).innerHTML = " ";
-    fillInitialList(filterList(inventory,document.querySelector(".bookSection__form .categorySelect").value,document.querySelector(".bookSection__form .form__titleInput").value,document.querySelector(".bookSection__form .form__pagesRange").value));
+    displayedList = filterList(inventory,document.querySelector(".bookSection__form .categorySelect").value,document.querySelector(".bookSection__form .form__titleInput")
+    .value,document.querySelector(".bookSection__form .form__pageFrom").value,document.querySelector(".bookSection__form .form__pageTo").value);
+    fillInitialList(displayedList);
+    e.preventDefault();
 })
+function appendLiWithBook(category, li){
+    for(const book of category){
+        const bookElement = document.createElement('p');
+        bookElement.textContent = getBookString(book);
+        li.append(bookElement);
+    }
+}
 function fillInitialList(inventory){
     for(const category of inventory){
-        const li = document.createElement('li');
-       
-        for(const book of category.books){
-            const bookElement = document.createElement('p');
-            bookElement.textContent = getBookString(book);
-            li.append(bookElement);
+        if(category.books && category.books.length > 0){
+            const li = document.createElement('li');      
+            appendLiWithBook(category.books, li)
+            const bookSection = document.querySelector(`.bookSection .bookSection__list`);
+            bookSection.appendChild(li);
         }
-        const bookSection = document.querySelector(`.bookSection .bookSection__list`);
-        bookSection.appendChild(li);
     }
 }
 function fillSortedList(inventory, sortRequest, order){
     for(const category of inventory){
-        const li = document.createElement('li');
-        console.log(category.books);
-        console.log(bookSorter(category.books,sortRequest, order));
-        for(const book of  bookSorter(category.books,sortRequest, order)){
-            const bookElement = document.createElement('p');
-            bookElement.textContent = getBookString(book);
-            li.append(bookElement);
+        if (category.books && category.books.length > 0){
+            const li = document.createElement('li');
+            appendLiWithBook(bookSorter(category.books,sortRequest, order), li)
+            const bookSection = document.querySelector(`.bookSection .bookSection__list`);
+            bookSection.appendChild(li);
         }
-        console.log(li);
-        const bookSection = document.querySelector(`.bookSection .bookSection__list`);
-        bookSection.appendChild(li);
     }
 }
 function fillMathList(inventory){
     for(const category of inventory){
-        const li = document.createElement('li');
-        for(const book of category.books){
-            const bookElement = document.createElement('p');
-            bookElement.textContent = getBookString(book);
-            li.append(bookElement);
+        if (category.books && category.books.length > 0){
+            const li = document.createElement('li');
+            appendLiWithBook(category.books, li)
+            const bookSection = document.querySelector(`.mathSection__list`);
+            bookSection.appendChild(li);
         }
-        const bookSection = document.querySelector(`.mathSection__list`);
-        bookSection.appendChild(li);
     }
 }
-function fillInventoryValue(inventory){
-    let inventoryValue = 0;
-    const li = document.createElement('li');
-    const inv = document.createElement('p');
+function appendLiWithCategoryVal(inventory, li, inventoryValue){
     for(const category of inventory){
         let categoryValue = calcCategoryValue(category.books);
         inventoryValue += categoryValue;
@@ -270,44 +270,49 @@ function fillInventoryValue(inventory){
         cat.textContent = `Category: ${category.category} total value: ${categoryValue} Euro`;
         li.append(cat);
     }
+    return inventoryValue
+}
+function fillInventoryValue(inventory){
+    let inventoryValue = 0;
+    const li = document.createElement('li');
+    const inv = document.createElement('p');
+    inventoryValue = appendLiWithCategoryVal(inventory, li, inventoryValue)
     console.log("Total inventory price: "+ inventoryValue + " Euro");
     const mathSection = document.querySelector(`.mathSection__list`);
     inv.textContent = "Total inventory price: "+ inventoryValue + " Euro";
     li.append(inv);
     mathSection.appendChild(li);
 }
-function filterList(inventory,filterRequestCategory,filterRequestTitle,filterRequestPages){
-    let newArray = JSON.parse(JSON.stringify(inventory));
-    if(filterRequestCategory == "all"){
-        return newArray;
-    }
+function filterPagesDiapazon(inventoryFilter, filterRequestFrom,filterRequestTo){
+    return inventoryFilter.filter((cat) => cat.books = cat.books.filter((book) => book.pages >= filterRequestFrom && book.pages <= filterRequestTo))  
+}
+function filterList(inventory,filterRequestCategory,filterRequestTitle,filterRequestPagesFrom,filterRequestPagesTo){
+    let newArray = JSON.parse(JSON.stringify(inventory));  
     if(filterRequestCategory != "all"){
     newArray = filterCategory(newArray, filterRequestCategory);
     }
     if(filterRequestTitle != ""){
     newArray = filterTitle(newArray, filterRequestTitle);
     }
-    if(filterRequestPages != "0"){
-    newArray = filterPages(newArray, filterRequestPages );
+    if(filterRequestPagesFrom != ""){
+        console.log(filterRequestPagesTo);
+    newArray = filterPagesDiapazon(newArray, filterRequestPagesFrom, filterRequestPagesTo);
     }
     return newArray;
 }
 function getSortedArray(){
-    return inventory.map(category => ({
+    return displayedList.map(category => ({
         ...category, 
-        books: bookSorter([...category.books], document.querySelector(".sortForm__sortSelect").value, 1)
+        books: bookSorter([...category.books], document.querySelector(".sortForm__sortSelect").value, document.querySelector(".sortForm__sortSelect").value)
     }));
 }
 document.querySelector(".bookSection__sortForm button").addEventListener(`click`,(e)=>{
     e.preventDefault();
     document.querySelector(`.bookSection .bookSection__list`).innerHTML = " ";
-    let newArray = inventory.map(category => ({
-        ...category, 
-        books: bookSorter([...category.books], document.querySelector(".sortForm__sortSelect").value, 1)
-    }));
-    console.log(document.querySelector(".sortForm__sortSelect").value);
-    console.log(bookSorter(newArray,document.querySelector(".sortForm__sortSelect").value,1));
-    fillSortedList(newArray,document.querySelector(".sortForm__sortSelect"),1);
+    if(displayedList.length === 0){
+        displayedList = inventory;
+    }
+    fillSortedList(getSortedArray(),document.querySelector(".sortForm__sortSelect"),document.querySelector(".sortForm__sortSelect"));
 })
 function filterByPrice(inventoryFilter,filterRequest){
     return inventoryFilter.filter((cat) => cat.books = cat.books.filter((book) => book.price == filterRequest))

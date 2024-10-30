@@ -1,0 +1,31 @@
+
+.bookSection{
+    margin: 0 auto;
+}
+.bookSection__form, .bookSection__sortForm{
+    margin: 10px auto;
+    justify-content: center;
+    display: flex;
+    gap:10px;
+}
+ul{
+    list-style: none;
+    padding-left: 0px;
+    
+}
+li{
+    padding-left: 10px;
+    border-radius: 10px;
+    border: 1px solid;
+    width:50%;
+    margin: 0 auto;
+    margin-bottom:10px;
+}
+.mathSection{
+    margin: 10px auto;
+}
+.btnContainer{
+    display: flex;
+    justify-content: center;
+    gap:10px;
+}
